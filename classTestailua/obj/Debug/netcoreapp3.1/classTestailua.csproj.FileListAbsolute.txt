@@ -1,0 +1,14 @@
+C:\Users\Joel\Desktop\projektit2023\C#-.NET\classTestailua\classTestailua\classTestailua\bin\Debug\netcoreapp3.1\classTestailua.exe
+C:\Users\Joel\Desktop\projektit2023\C#-.NET\classTestailua\classTestailua\classTestailua\bin\Debug\netcoreapp3.1\classTestailua.deps.json
+C:\Users\Joel\Desktop\projektit2023\C#-.NET\classTestailua\classTestailua\classTestailua\bin\Debug\netcoreapp3.1\classTestailua.runtimeconfig.json
+C:\Users\Joel\Desktop\projektit2023\C#-.NET\classTestailua\classTestailua\classTestailua\bin\Debug\netcoreapp3.1\classTestailua.runtimeconfig.dev.json
+C:\Users\Joel\Desktop\projektit2023\C#-.NET\classTestailua\classTestailua\classTestailua\bin\Debug\netcoreapp3.1\classTestailua.dll
+C:\Users\Joel\Desktop\projektit2023\C#-.NET\classTestailua\classTestailua\classTestailua\bin\Debug\netcoreapp3.1\classTestailua.pdb
+C:\Users\Joel\Desktop\projektit2023\C#-.NET\classTestailua\classTestailua\classTestailua\obj\Debug\netcoreapp3.1\classTestailua.csproj.AssemblyReference.cache
+C:\Users\Joel\Desktop\projektit2023\C#-.NET\classTestailua\classTestailua\classTestailua\obj\Debug\netcoreapp3.1\classTestailua.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Joel\Desktop\projektit2023\C#-.NET\classTestailua\classTestailua\classTestailua\obj\Debug\netcoreapp3.1\classTestailua.AssemblyInfoInputs.cache
+C:\Users\Joel\Desktop\projektit2023\C#-.NET\classTestailua\classTestailua\classTestailua\obj\Debug\netcoreapp3.1\classTestailua.AssemblyInfo.cs
+C:\Users\Joel\Desktop\projektit2023\C#-.NET\classTestailua\classTestailua\classTestailua\obj\Debug\netcoreapp3.1\classTestailua.csproj.CoreCompileInputs.cache
+C:\Users\Joel\Desktop\projektit2023\C#-.NET\classTestailua\classTestailua\classTestailua\obj\Debug\netcoreapp3.1\classTestailua.dll
+C:\Users\Joel\Desktop\projektit2023\C#-.NET\classTestailua\classTestailua\classTestailua\obj\Debug\netcoreapp3.1\classTestailua.pdb
+C:\Users\Joel\Desktop\projektit2023\C#-.NET\classTestailua\classTestailua\classTestailua\obj\Debug\netcoreapp3.1\classTestailua.genruntimeconfig.cache
