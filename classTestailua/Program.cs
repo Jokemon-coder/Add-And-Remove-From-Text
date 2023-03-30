@@ -14,19 +14,26 @@ namespace classTestailua
         programStart:
             //CreateNewLine or clear based on if an empty line exists or not. This is to help with id creation of person.
             Console.ReadLine();
-            ClearAfterInput("Hei! Aloita valitsemalla onko lisäämäsi olio ihminen vai eläin:");
+            ClearAfterInput("Hello, welcome to the program! You can add a new person or look at already existing people by choosing between 1 and 2.");
+            Console.WriteLine();
+            Console.WriteLine("Add new person: press 1 and Enter");
+            Console.WriteLine("Look at already existing people: press 2 and Enter");
 
-            Console.WriteLine("Ihminen: paina 1 ja Enter");
-            Console.WriteLine("Eläin: paina 2 ja Enter");
+            int startFailLimit = 0;
 
-        userInputStart:
+        userInputStartIfFail:
             //Input which is tryparsed, if it fails come back to input and otherwise continue the program
             string userInput = Console.ReadLine();
             int InputNumber;
             if (!int.TryParse(userInput, out InputNumber))
             {
-                Console.WriteLine("Syötä vain numeroita");
-                goto userInputStart;
+                Console.WriteLine("Only enter numbers.");
+                startFailLimit++;
+                if(startFailLimit >= 3)
+                {
+                    goto programStart;
+                }
+                goto userInputStartIfFail;
             }
             else
 
@@ -231,9 +238,33 @@ namespace classTestailua
                         }
 
                     case "2":
-                        Console.Clear();
-                        Console.WriteLine("Eläin");
-                        break;
+                        
+                        ClearAfterInput("Pystyt muokkaamaan tallennettuja henkilöitä painamalla 1 tai palaamaan takaisin painamalla 2.");
+                        Human.CreateNewLineAndClear();
+                        Human.GetSavedItems(File.ReadAllLines("People.txt").Length, File.ReadAllLines("People.txt"), false, 0);
+                    start2:
+                        string savedInput2 = Console.ReadLine();
+                        int savedNum2;
+                        if (!int.TryParse(savedInput2, out savedNum2))
+                        {
+                            Console.WriteLine("Syötä vain numeroita.");
+                            goto start;
+                        }
+                        if (savedNum2 == 1)
+                        {
+                        editStart:
+                            EditSavedItems(/*File.ReadAllLines("People.txt").Length, File.ReadAllLines("People.txt")*/);
+                            goto editStart;
+                        }
+                        else if (savedNum2 == 2)
+                        {
+                            goto programStart;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Syötit väärän arvon.Valitse 1 , 2 tai 3:");
+                            goto start2;
+                        }
                 }
 
         }
