@@ -39,6 +39,7 @@ namespace classTestailua
 
         public override string ToString()
         {
+            //Format the variables into a readable string
             return string.Format("ID {0}: {1}, {2}-v, {3}", Id, Name, Age, Gender);
         }
 
@@ -71,14 +72,9 @@ namespace classTestailua
             //Declare data and item here, as this actually makes them update in real time. 
             string[] data = File.ReadAllLines("People.txt");
             string item = data[line];
-        
-        editNameStart:
-            Program.ClearAfterInput("Muokkaa nimeä: ");
 
             //Splitting the selected item with the delimiters
             string[] selectedItemContentArray = item.Split(delimiters, StringSplitOptions.None);
-
-            Console.WriteLine(selectedItemContentArray[1]);
 
             //Create a new string first, which adds the ID number plus the first element after (NAME)
             string firstHalfString = string.Join(": ", selectedItemContentArray[0], selectedItemContentArray[1] + ", ");
@@ -88,19 +84,8 @@ namespace classTestailua
             
             //Make original content be both combined
             string originalContent = firstHalfString + secondHalfString;
-
-            string newName = Console.ReadLine();
-            if (Human.CheckIfDoesNotContainNumbers(newName) != true) //Message and go back if the name contains numbers
-            {
-                Console.WriteLine("Antamassasi nimessä on numeroita. Syötä vain kirjaimia.");
-                goto editNameStart;
-            }
-
-            //Same logic as before. I chose to do it this way, because splicing and joining the entire string together did not work which resulted in "ID 0, example, example, example."
-            //This is not good, as then the program does not recgonise it because ID 0 has to be separated from the rest with just : 
-            firstHalfString = firstHalfString.Replace(selectedItemContentArray[1], newName);
-            string editedContent = string.Join(", ", selectedItemContentArray[2], selectedItemContentArray[3]);
-            editedContent = firstHalfString + editedContent;
+            
+            string editedContent = editGeneral(item, delimiters, firstHalfString, "name");
 
             //Read and replace the original content with the edited content and then write it into the file
             string text = File.ReadAllText(file);
@@ -115,30 +100,13 @@ namespace classTestailua
             string[] data = File.ReadAllLines("People.txt");
             string item = data[line];
 
-            Program.ClearAfterInput("Muokkaa ikää: ");
-
             string[] selectedItemContentArray = item.Split(delimiters, StringSplitOptions.None);
-
-            Console.WriteLine(selectedItemContentArray[2].Split("-v")[0]);
 
             string firstHalfString = string.Join(": ", selectedItemContentArray[0], selectedItemContentArray[1] + ", ");
             string secondHalfString = string.Join(", ", selectedItemContentArray[2], selectedItemContentArray[3]);
+            
             string originalContent = firstHalfString + secondHalfString;
-        GiveNewAge:
-            string newAge = Console.ReadLine();
-            if (Human.CheckIfDoesNotContainNumbers(newAge) != false) //Message and go back if the age contains letters
-            {
-                Console.WriteLine("Antamassasi iässä on kirjaimia.");
-                goto GiveNewAge;
-            }
-            else if (Convert.ToInt32(newAge) > 125) //If the age is more than 125, message and go back
-            {
-                Console.WriteLine($"{newAge}? Tuota en kyllä usko. Anna hänen oikea ikä.");
-                goto GiveNewAge;
-            }
-
-            secondHalfString = secondHalfString.Replace(selectedItemContentArray[2], newAge + "-v");
-            string editedContent = firstHalfString + secondHalfString;
+            string editedContent = firstHalfString + editGeneral(item, delimiters, secondHalfString, "age");
 
             string text = File.ReadAllText(file);
             text = text.Replace(originalContent, editedContent);
@@ -152,57 +120,17 @@ namespace classTestailua
             string[] data = File.ReadAllLines("People.txt");
             string item = data[line];
 
-            Program.ClearAfterInput("Valitse mies painamalla 1 ja nainen painamalla 2.");
-            Console.WriteLine("Muokkaa sukupuolta: ");
-
-
             string[] selectedItemContentArray = item.Split(delimiters, StringSplitOptions.None);
 
-            Console.WriteLine(selectedItemContentArray[3]);
-
-        select:
             string firstHalfString = string.Join(": ", selectedItemContentArray[0], selectedItemContentArray[1] + ", ");
             string secondHalfString = string.Join(", ", selectedItemContentArray[2], selectedItemContentArray[3]);
+            
             string originalContent = firstHalfString + secondHalfString;
+            string editedContent = firstHalfString + editGeneral(item, delimiters, secondHalfString, "gender");
 
-            string editedContent;
-            string newGender;
-            string text;
-            string newGenderSelect = Console.ReadLine();
-            int num;
-            if (!int.TryParse(newGenderSelect, out num)) //Message and go back if input can't be parsed to an int
-            {
-                Console.WriteLine("Syötä vain numeroita.");
-                goto select;
-
-            }
-            if (Convert.ToInt32(newGenderSelect) == 1)
-            {
-                newGender = "mies";
-                secondHalfString = secondHalfString.Replace(selectedItemContentArray[3], newGender);
-                editedContent = firstHalfString + secondHalfString;
-
-                text = File.ReadAllText(file);
-                text = text.Replace(originalContent, editedContent);
-                File.WriteAllText(file, text);
-
-            }
-            else if (Convert.ToInt32(newGenderSelect) == 2)
-            {
-                newGender = "nainen";
-                secondHalfString = secondHalfString.Replace(selectedItemContentArray[3], newGender);
-                editedContent = firstHalfString + secondHalfString;
-
-                text = File.ReadAllText(file);
-                text = text.Replace(originalContent, editedContent);
-                File.WriteAllText(file, text);
-
-            }
-            else if (Convert.ToInt32(newGenderSelect) != 1 || Convert.ToInt32(newGenderSelect) != 2) //Message and go back if the input is not 1 or 2
-            {
-                Console.WriteLine("Valitsit väärän arvon.");
-                goto select;
-            }
+            string text = File.ReadAllText(file);
+            text = text.Replace(originalContent, editedContent);
+            File.WriteAllText(file, text);
 
         }
 
@@ -212,40 +140,139 @@ namespace classTestailua
             string[] data = File.ReadAllLines("People.txt");
             string item = data[line];
             string deletedString = "";
-        /*select:
-            Program.ClearAfterInput("Oletko varma, että haluat poistaa henkilön?");
-            Console.WriteLine(item);
-            Console.WriteLine("1: KYLLÄ");
-            Console.WriteLine("2: EI");
-        selectIfFail:*/
 
             string text;
+            
+            text = File.ReadAllText(file);
+            text = text.Replace(item, deletedString);
+            File.WriteAllText(file, text);
+            File.WriteAllLines(file, File.ReadAllLines(file).Where(l => !string.IsNullOrWhiteSpace(l)));
 
-            /*string selectDel = Console.ReadLine();
-            int num;
-            int failNumDelete = 0;
+            UpdateIdOnDelete();
+            
+        }
 
+        private static string editGeneral(string item, string[] delimiters, string modified, string identifier)
+        {
+            string[] selectedItemContentArray;
+            string editedContent;
 
-            if (!int.TryParse(selectDel, out num))
+            if(identifier == "name")
             {
-                Console.WriteLine("Syötä vain numeroita.");
-                failNumDelete++;
-                if(failNumDelete >= 4)
+               selectedItemContentArray = item.Split(delimiters, StringSplitOptions.None);
+            editStart:
+                Program.ClearAfterInput("Muokkaa nimeä: ");
+                Console.WriteLine(selectedItemContentArray[1]);
+                int editFailLimit = 0;
+            editStartIfFail:
+                string newContent = Console.ReadLine();
+                if (Human.CheckIfDoesNotContainNumbers(newContent) != true) //Message and go back if the name contains numbers
                 {
-                    goto select;
+                    Console.WriteLine("Antamassasi nimessä on numeroita. Syötä vain kirjaimia.");
+                    editFailLimit++;
+                    if (Program.CheckFail(editFailLimit) == true)
+                    {
+                        goto editStart;
+                    }
+                    goto editStartIfFail;
                 }
-                goto selectIfFail;
 
-            }*/
-            /*if (Convert.ToInt32(selectDel) == 1)
-            {*/
-                text = File.ReadAllText(file);
-                text = text.Replace(item, deletedString);
-                File.WriteAllText(file, text);
-                File.WriteAllLines(file, File.ReadAllLines(file).Where(l => !string.IsNullOrWhiteSpace(l)));
+                //Same logic as before. I chose to do it this way, because splicing and joining the entire string together did not work which resulted in "ID 0, example, example, example."
+                //This is not good, as then the program does not recgonise it because ID 0 has to be separated from the rest with just : 
+                modified = modified.Replace(selectedItemContentArray[1], newContent);
+                editedContent = string.Join(", ", selectedItemContentArray[2], selectedItemContentArray[3]);
+                editedContent = modified + editedContent;
+                return editedContent;
+            }
 
-                UpdateIdOnDelete();
-            //}
+            if(identifier == "age")
+            {
+                selectedItemContentArray = item.Split(delimiters, StringSplitOptions.None);
+            editStart:
+                Program.ClearAfterInput("Muokkaa ikää: ");
+                Console.WriteLine(selectedItemContentArray[2].Split("-v")[0]);
+                int editFailLimit = 0;
+            editStartIfFail:
+                string newContent = Console.ReadLine();
+                if (Human.CheckIfDoesNotContainNumbers(newContent) != false) //Message and go back if the age contains letters
+                {
+                    Console.WriteLine("Antamassasi iässä on kirjaimia.");
+                    editFailLimit++;
+                    if(Program.CheckFail(editFailLimit) == true)
+                    {
+                        goto editStart;
+                    }
+                    goto editStartIfFail;
+                }
+                else if (Convert.ToInt32(newContent) > 125) //If the age is more than 125, message and go back
+                {
+                    Console.WriteLine($"{newContent}? Tuota en kyllä usko. Anna hänen oikea ikä.");
+                    editFailLimit++;
+                    if (Program.CheckFail(editFailLimit) == true)
+                    {
+                        goto editStart;
+                    }
+                    goto editStartIfFail;
+                }
+                modified = modified.Replace(selectedItemContentArray[2], newContent + "-v");
+                editedContent = modified;
+                return editedContent;
+
+
+            }
+            if(identifier == "gender")
+            {
+                
+                selectedItemContentArray = item.Split(delimiters, StringSplitOptions.None);
+            editStart:
+                Program.ClearAfterInput("Valitse mies painamalla 1 ja nainen painamalla 2.");
+                Console.WriteLine("Muokkaa sukupuolta: ");
+                Console.WriteLine(selectedItemContentArray[3]);
+                int failLimit = 0;
+            editStartIfFail:
+                string newContent = Console.ReadLine();
+                int num;
+                if (!int.TryParse(newContent, out num)) //Message and go back if input can't be parsed to an int
+                {
+                    Console.WriteLine("Syötä vain numeroita.");
+                    failLimit++;
+                    if(Program.CheckFail(failLimit) == true)
+                    {
+                        goto editStart;
+                    }
+                    goto editStartIfFail;
+                }
+
+                if(Convert.ToInt32(newContent) == 1)
+                {
+                    newContent = "mies";
+                    modified = modified.Replace(selectedItemContentArray[3], newContent);
+                    editedContent = modified;
+                    return editedContent;
+                }
+                else if (Convert.ToInt32(newContent) == 2)
+                {
+                    newContent = "nainen";
+                    modified = modified.Replace(selectedItemContentArray[3], newContent);
+                    editedContent = modified;
+                    return editedContent;
+                }
+                else if (Convert.ToInt32(newContent) != 1 || Convert.ToInt32(newContent) != 2)
+                {
+                    Console.WriteLine("Syötä 1 tai 2.");
+                    Console.WriteLine(num);
+                    failLimit++;
+                    if (Program.CheckFail(failLimit) == true)
+                    {
+                        goto editStart;
+                    }
+                    goto editStartIfFail;
+                }
+
+
+            }
+
+            return "no";
         }
 
         public static void CreateNewLineAndClear()

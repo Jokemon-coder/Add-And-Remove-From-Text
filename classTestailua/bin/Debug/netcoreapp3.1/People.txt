@@ -1,9 +1,9 @@
 ID 0: Jukka, 17-v, mies
-ID 1: Pekka, 56-v, mies
+ID 1: Lukka, 56-v, nainen
 ID 2: Liisa, 24-v, nainen
-ID 3: Petri, 45-v, mies
-ID 4: Hello, 2-v, nainen
-ID 5: Hello, 2-v, nainen
+ID 3: Pukka, 45-v, mies
+ID 4: Hello, 12-v, nainen
+ID 5: Hello, 12-v, nainen
 ID 6: Hello, 2-v, nainen
 ID 7: Hello, 2-v, nainen
 ID 8: Hello, 2-v, nainen
