@@ -6,7 +6,7 @@ using System.IO;
 
 namespace classTestailua
 {
-    class Human
+    public class Human
     {
         //private string name;
         public string Name
@@ -42,8 +42,10 @@ namespace classTestailua
             return string.Format("ID {0}: {1}, {2}-v, {3}", Id, Name, Age, Gender);
         }
 
-        public static void GetSavedItems(int id, string[] data, bool specific, int specificNum)
+        public static void GetSavedItems(bool specific, int specificNum)
         {
+            int id = File.ReadAllLines("People.txt").Length;
+            string[] data = File.ReadAllLines("People.txt");
             if (specific == false) //Get all saved items with a for loop, if bool specific is false
             {
                 for (int i = 0; i < id; i++)

@@ -13,11 +13,10 @@ namespace classTestailua
         //Start of program
         programStart:
             //CreateNewLine or clear based on if an empty line exists or not. This is to help with id creation of person.
-            Console.ReadLine();
-            ClearAfterInput("Hei! Aloita valitsemalla onko lisäämäsi olio ihminen vai eläin:");
+            ClearAfterInput("Hei! Aloita valitsemalla haluatko lisätä uuden henkilön vai tarkastella olemassa olevia:");
 
-            Console.WriteLine("Ihminen: paina 1 ja Enter");
-            Console.WriteLine("Eläin: paina 2 ja Enter");
+            Console.WriteLine("Uusi henkilö: paina 1 ja Enter");
+            Console.WriteLine("Olemassa olevat henkilöt: paina 2 ja Enter");
 
         userInputStart:
             //Input which is tryparsed, if it fails come back to input and otherwise continue the program
@@ -45,7 +44,7 @@ namespace classTestailua
                         {
                             Console.WriteLine("Antamassasi nimessä on numeroita. Syötä vain kirjaimia.");
                             nameFailLimit++;
-                            if(nameFailLimit >= 4)
+                            if(checkFail(nameFailLimit) == true)
                             {
                                 goto GiveName;
                             }
@@ -54,15 +53,15 @@ namespace classTestailua
                     GiveAge:
                         ClearAfterInput($"Kuinka vanha on {newHuman.Name}?");
                         int ageFailLimit = 0;
-                        //Start of giving age, if age contains letters or it is over 125, start over
-                        GiveAgeOnFail:
+                    //Start of giving age, if age contains letters or it is over 125, start over
+                    GiveAgeOnFail:
                         string age = Console.ReadLine();
                         int ageNum;
-                        if(!int.TryParse(age, out ageNum))
+                        if (!int.TryParse(age, out ageNum))
                         {
                             Console.WriteLine("Antamassassi iässä on kirjaimia. Syötä vain numeroita.");
                             ageFailLimit++;
-                            if (ageFailLimit >= 4)
+                            if (checkFail(ageFailLimit) == true)
                             {
                                 goto GiveAge;
                             }
@@ -73,7 +72,7 @@ namespace classTestailua
                         {
                             Console.WriteLine($"{age}? Tuota en kyllä usko. Anna hänen oikea ikä.");
                             ageFailLimit++;
-                            if (ageFailLimit >= 4)
+                            if (checkFail(ageFailLimit) == true)
                             {
                                 goto GiveAge;
                             }
@@ -84,15 +83,15 @@ namespace classTestailua
                     GiveGender:
                         ClearAfterInput("Mikä on hänen sukupuolensa? Valitse mies painamalla 1 tai nainen painamalla 2:");
                         int genderFailLimit = 0;
-                        //Start of giving gender
-                        GiveGenderOnFail:
+                    //Start of giving gender
+                    GiveGenderOnFail:
                         string genderInput = Console.ReadLine();
                         int GenderNum;
-                        if(!int.TryParse(genderInput, out GenderNum))
+                        if (!int.TryParse(genderInput, out GenderNum))
                         {
                             Console.WriteLine("Syötä vain numeroita.");
                             genderFailLimit++;
-                            if (genderFailLimit >= 4)
+                            if (checkFail(genderFailLimit) == true)
                             {
                                 goto GiveGender;
                             }
@@ -110,14 +109,14 @@ namespace classTestailua
                         {
                             Console.WriteLine("Syötit väärän arvon. Valitse 1 tai 2:");
                             genderFailLimit++;
-                            if (genderFailLimit >= 4)
+                            if (checkFail(genderFailLimit) == true)
                             {
                                 goto GiveGender;
                             }
                             goto GiveGenderOnFail;
                         }
 
-                        ClearAfterInput($"Eli {newHuman.Name} on {newHuman.Age} vuotta vanha {newHuman.Gender}? Kiinnostavaa.");
+                        //ClearAfterInput($"Eli {newHuman.Name} on {newHuman.Age} vuotta vanha {newHuman.Gender}? Kiinnostavaa.");
                         //Create an ID for the person
                         Human.CreateNewLineAndClear();
                         Human.MakeId(File.ReadAllLines("People.txt").Length, newHuman);
@@ -131,19 +130,13 @@ namespace classTestailua
                         //Get all lines from People.txt and split the retrieved item for comparison with personSplit
                         Human.CreateNewLineAndClear();
                         string[] data = File.ReadAllLines("People.txt");
-                        Console.WriteLine(data.Length);
-                        //int id = Convert.ToInt32(personSplit[0].Remove(0, 3));
                         int id = data.Length;
-                        Console.WriteLine(id);
-                        if(id < data.Length)
+                        if (id < data.Length)
 
                         {
                             //CreateNewLineAndClear();
                             id = data.Length;
                         }
-                        Console.WriteLine(data.Length);
-                        Console.WriteLine(id);
-                        Console.ReadLine();
                         string item;
                         if (data.Length == 0)
                         {
@@ -151,19 +144,17 @@ namespace classTestailua
                         }
                         else
 
-                        
-                        item = data[id-1];
-                        
-                        
+
+                            item = data[id - 1];
+
+
                         string[] itemSplit = item.Split(delimiters, StringSplitOptions.None);
 
                         //If statement to check if person and the item already existing in the file have the same ID. If they do, replace person ID with one that has been increased by 1.
                         if (personSplit[0] == itemSplit[0])
                         {
-                            string increasedID = personSplit[0].Replace($"ID {id-1}", $"ID {id}");
-                            Console.WriteLine(person);
+                            string increasedID = personSplit[0].Replace($"ID {id - 1}", $"ID {id}");
                             person = person.Replace(personSplit[0], increasedID);
-                            Console.WriteLine(person);
                         }
 
                         //After all that, finally write the person into the file and if their id already existed, with the updated one.
@@ -171,9 +162,13 @@ namespace classTestailua
                         {
                             writer.WriteLine(person);
                         }
+                    endOfHuman:
+                        ClearAfterInput($"Eli {newHuman.Name} on {newHuman.Age} vuotta vanha {newHuman.Gender}? Kiinnostavaa.");
+                        Console.WriteLine();
                         Console.WriteLine("Haluaisitko lisätä uuden henkilön vai palata alkuun? Paina 1 palataksesi tai 2 uuden henkilön lisäykseen.");
                         Console.WriteLine("Voit myös tarkastella tallennttuja henkilöitä painamalla 3.");
-                    endOfHuman:
+                        int selectionFailLimit = 0;
+                    endOfHumanIfFail:
                         //End of creating human
 
                         string exitInput = Console.ReadLine();
@@ -182,7 +177,12 @@ namespace classTestailua
                         if (!int.TryParse(exitInput, out exitNum))
                         {
                             Console.WriteLine("Syötä vain numeroita.");
-                            goto endOfHuman;
+                            selectionFailLimit++;
+                            if (checkFail(selectionFailLimit) == true)
+                            {
+                                goto endOfHuman;
+                            }
+                            goto endOfHumanIfFail;
                         }
 
                         if (exitNum == 1)
@@ -199,25 +199,36 @@ namespace classTestailua
                         } else
                         {
                             Console.WriteLine("Syötit väärän arvon. Valitse 1 , 2 tai 3:");
-                            goto endOfHuman;
+                            selectionFailLimit++;
+                            if (checkFail(selectionFailLimit) == true)
+                            {
+                                goto endOfHuman;
+                            }
+                            goto endOfHumanIfFail;
                         }
 
                     savedPeople:
                         ClearAfterInput("Pystyt muokkaamaan tallennettuja henkilöitä painamalla 1 tai palaamaan takaisin painamalla 2.");
                         Human.CreateNewLineAndClear();
-                        Human.GetSavedItems(File.ReadAllLines("People.txt").Length, File.ReadAllLines("People.txt"), false, 0);
-                    start:
+                        Human.GetSavedItems(false, 0);
+                        int savedFailLimit = 0;
+                    startIfFail:
                         string savedInput = Console.ReadLine();
                         int savedNum;
                         if (!int.TryParse(savedInput, out savedNum))
                         {
                             Console.WriteLine("Syötä vain numeroita.");
-                            goto start;
+                            savedFailLimit++;
+                            if(checkFail(savedFailLimit) == true)
+                            {
+                                goto savedPeople;
+                            }
+                            goto startIfFail;
                         }
                         if (savedNum == 1)
                         {
                         editStart:
-                            EditSavedItems(/*File.ReadAllLines("People.txt").Length, File.ReadAllLines("People.txt")*/);
+                            EditSavedItems();
                             goto editStart;
                         }
                         else if (savedNum == 2)
@@ -227,13 +238,53 @@ namespace classTestailua
                         else
                         {
                             Console.WriteLine("Syötit väärän arvon.Valitse 1 , 2 tai 3:");
-                            goto start;
+                            savedFailLimit++;
+                            if(checkFail(savedFailLimit) == true)
+                            {
+                                goto savedPeople;
+                            }
+                            goto startIfFail;
                         }
 
                     case "2":
-                        Console.Clear();
-                        Console.WriteLine("Eläin");
-                        break;
+                    startOfEditFromStart:
+                        ClearAfterInput("Pystyt muokkaamaan tallennettuja henkilöitä painamalla 1 tai palaamaan takaisin painamalla 2.");
+                        Human.CreateNewLineAndClear();
+                        Human.GetSavedItems(false, 0);
+                        int savedStartFailLimit = 0;
+                    startOfEditFromStartIfFail:
+                        string savedInput2 = Console.ReadLine();
+                        int savedNum2;
+                        if (!int.TryParse(savedInput2, out savedNum2))
+                        {
+                            Console.WriteLine("Syötä vain numeroita.");
+                            savedStartFailLimit++;
+                            if(checkFail(savedStartFailLimit) == true)
+                            {
+                                goto startOfEditFromStart;
+                            }
+                            goto startOfEditFromStartIfFail;
+                        }
+                        if (savedNum2 == 1)
+                        {
+                        editStart:
+                            EditSavedItems(/*File.ReadAllLines("People.txt").Length, File.ReadAllLines("People.txt")*/);
+                            goto editStart;
+                        }
+                        else if (savedNum2 == 2)
+                        {
+                            goto programStart;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Syötit väärän arvon.Valitse 1 , 2 tai 3:");
+                            savedStartFailLimit++;
+                            if (checkFail(savedStartFailLimit) == true)
+                            {
+                                goto startOfEditFromStart;
+                            }
+                            goto startOfEditFromStartIfFail;
+                        }
                 }
 
         }
@@ -242,9 +293,9 @@ namespace classTestailua
         {
         SelectItem:
             int id = File.ReadAllLines("People.txt").Length;
-            string[] data = File.ReadAllLines("People.txt");
+            /* string[] data = File.ReadAllLines("People.txt");*/
             ClearAfterInput("Voit muokata tallennettuja tietoja kirjoittamalla niiden ID-luvun ja painamalla enter.");
-            Human.GetSavedItems(id, data, false, 0);
+            Human.GetSavedItems(false, 0);
 
             //An int to track number of fails, if it reaches 4, go back to start and clear
             int failLimit = 0;
@@ -278,7 +329,7 @@ namespace classTestailua
         editStart:
             //string selectedItemContent = data[selectedItem];
             ClearAfterInput("Muokkaat: ");
-            Human.GetSavedItems(id, data, true, selectedItem);
+            Human.GetSavedItems(true, selectedItem);
             //Start of actual editing
             Console.WriteLine("Voit muokata nimeä painamalla 1, ikää painamalla 2 tai sukupuolta painamalla 3. Poista painamalla 0. Voit myös palata takaisin painamalla 4.");
         editStartIfFail:
@@ -287,7 +338,7 @@ namespace classTestailua
             {
                 Console.WriteLine("Syötä vain numeroita.");
                 failLimit += 1;
-                if(failLimit >= 4)
+                if (failLimit >= 4)
                 {
                     goto editStart;
                 }
@@ -317,7 +368,7 @@ namespace classTestailua
             {
             select:
                 ClearAfterInput($"Oletko varma että haluat poistaa:");
-                Human.GetSavedItems(id, data, true, selectedItem);
+                Human.GetSavedItems(true, selectedItem);
                 Console.WriteLine("1: KYLLÄ");
                 Console.WriteLine("2: EI");
                 int deleteFailLimit = 0;
@@ -334,13 +385,13 @@ namespace classTestailua
                     }
                     goto selectIfFail;
                 }
-                if(num == 1)
+                if (num == 1)
                 {
                     Human.Delete("People.txt", selectedItem);
-                }else if(num == 2)
+                } else if (num == 2)
                 {
                     goto editStart;
-                }else
+                } else
                 {
                     Console.WriteLine("Syötit väärän arvon.Valitse 1 tai 2:");
                     failLimit += 1;
@@ -358,6 +409,18 @@ namespace classTestailua
             Console.Clear();
             Console.WriteLine(afterClearText);
 
+        }
+
+        public static bool checkFail(int fails)
+        {
+            if (fails == 4)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
