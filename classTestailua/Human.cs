@@ -57,12 +57,12 @@ namespace classTestailua
             }
             else //Get a specific item if bool specific is set to true
             {
-                int i = specificNum;
-                while (i == specificNum)
+                Console.WriteLine(File.ReadLines("People.txt").Skip(specificNum).Take(1).First());
+                /*while (i == specificNum)
                 {
-                    Console.WriteLine(File.ReadLines("People.txt").Skip(i).Take(1).First());
-                    i++;
-                }
+                  Console.WriteLine(File.ReadLines("People.txt").Skip(i).Take(1).First());
+                  i++;     
+                }*/
             }
 
         }
@@ -85,6 +85,7 @@ namespace classTestailua
             //Make original content be both combined
             string originalContent = firstHalfString + secondHalfString;
             
+            //editedContent will be the result of editGeneral()
             string editedContent = editGeneral(item, delimiters, firstHalfString, "name");
 
             //Read and replace the original content with the edited content and then write it into the file
@@ -96,7 +97,6 @@ namespace classTestailua
 
         public static void editAge(string file, int line, string[] delimiters)
         {
-            //Largely the same logic applies here as it did with EditName. Only differences are slight adjustments to how the string is split and put back together.
             string[] data = File.ReadAllLines("People.txt");
             string item = data[line];
 
@@ -116,7 +116,6 @@ namespace classTestailua
 
         public static void editGender(string file, int line, string[] delimiters)
         {
-            //Same logic as in the previous two except for slight adjustments with putting together the edited content
             string[] data = File.ReadAllLines("People.txt");
             string item = data[line];
 
@@ -137,6 +136,7 @@ namespace classTestailua
 
         public static void Delete(string file, int line)
         {
+            //Replace the selected item with an empty string and then WriteAllLines clearing empty lines
             string[] data = File.ReadAllLines("People.txt");
             string item = data[line];
             string deletedString = "";
@@ -154,11 +154,14 @@ namespace classTestailua
 
         private static string editGeneral(string item, string[] delimiters, string modified, string identifier)
         {
+            //General editing function, that is called in all the editing sections
+            //Comments are only going to be on the first with the identifier "name", since the rest follow the same logic with slight unique quirks to them
             string[] selectedItemContentArray;
             string editedContent;
 
             if(identifier == "name")
             {
+                //Split the item into it's individual strings, in this case the one on index 1
                selectedItemContentArray = item.Split(delimiters, StringSplitOptions.None);
             editStart:
                 Program.ClearAfterInput("Muokkaa nimeä: ");
@@ -176,11 +179,13 @@ namespace classTestailua
                     }
                     goto editStartIfFail;
                 }
-
-                //Same logic as before. I chose to do it this way, because splicing and joining the entire string together did not work which resulted in "ID 0, example, example, example."
-                //This is not good, as then the program does not recgonise it because ID 0 has to be separated from the rest with just : 
+                //Replace the specific string in "modified" with the user input newContent
                 modified = modified.Replace(selectedItemContentArray[1], newContent);
+                
+                //Set up the editedContent
                 editedContent = string.Join(", ", selectedItemContentArray[2], selectedItemContentArray[3]);
+                
+                //Finalize editedContent by adding modified to the front of it
                 editedContent = modified + editedContent;
                 return editedContent;
             }
@@ -272,7 +277,7 @@ namespace classTestailua
 
             }
 
-            return "no";
+            return "";
         }
 
         public static void CreateNewLineAndClear()
@@ -288,10 +293,12 @@ namespace classTestailua
                     writer.WriteLine("");
                 }
             }
+            //If the length is not 0 and the first line is empty, clear that line
             else if (fileContent.Length != 0 && fileContent[0] == "")
             {
                 File.WriteAllLines("People.txt", File.ReadAllLines("People.txt").Where(line => !string.IsNullOrWhiteSpace(line)));
             }
+            //If the length is not 0, check all lines with for loop and clear them if they're empty
             else if (fileContent.Length != 0)
             {
                 for (int i = 0; i > fileContent.Length - 1; i++)

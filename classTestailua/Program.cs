@@ -264,6 +264,7 @@ namespace classTestailua
                         }
                         if (savedNum2 == 1)
                         {
+                            Human.CreateNewLineAndClear();
                         editStart:
                             EditSavedItems();
                             goto editStart;
@@ -310,7 +311,7 @@ namespace classTestailua
                 }
                 goto selectItemIfFail;
             }
-            if (Convert.ToInt32(userInput) >= id)
+            if (Convert.ToInt32(userInput) >= id || Convert.ToInt32(userInput) < 0)
             {
                 Console.WriteLine("Syötettyä arvoa ei ole olemassa.");
                 failLimit += 1;
