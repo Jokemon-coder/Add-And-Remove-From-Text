@@ -17,14 +17,21 @@ namespace classTestailua
 
             Console.WriteLine("Uusi henkilö: paina 1 ja Enter");
             Console.WriteLine("Olemassa olevat henkilöt: paina 2 ja Enter");
-
+            
+            int startSelectionFaiLimit = 0;
         userInputStart:
             //Input which is tryparsed, if it fails come back to input and otherwise continue the program
             string userInput = Console.ReadLine();
             int InputNumber;
             if (!int.TryParse(userInput, out InputNumber))
             {
-                Console.WriteLine("Syötä vain numeroita");
+                Console.WriteLine("Syötä vain numeroita:");
+                startSelectionFaiLimit++;
+                if(CheckFail(startSelectionFaiLimit) == true)
+                {
+                    goto programStart;
+
+                }
                 goto userInputStart;
             }
             else
@@ -37,12 +44,13 @@ namespace classTestailua
                         Human newHuman = new Human();
                         Console.Clear();
                         Console.WriteLine("Mikäs mahtaa olla kyseisen henkilön nimi?");
+                        
                         int nameFailLimit = 0;
                     GiveNameOnFail:
                         newHuman.Name = Console.ReadLine();
                         if (Human.CheckIfDoesNotContainNumbers(newHuman.Name) != true)
                         {
-                            Console.WriteLine("Antamassasi nimessä on numeroita. Syötä vain kirjaimia.");
+                            Console.WriteLine("Antamassasi nimessä on numeroita. Syötä vain kirjaimia:");
                             nameFailLimit++;
                             if(CheckFail(nameFailLimit) == true)
                             {
@@ -50,8 +58,19 @@ namespace classTestailua
                             }
                             goto GiveNameOnFail;
                         }
+                        if(newHuman.Name == "")
+                        {
+                            Console.WriteLine("Nimi ei voi olla tyhjä, yritä uudelleen:");
+                            nameFailLimit++;
+                            if (CheckFail(nameFailLimit) == true)
+                            {
+                                goto GiveName;
+                            }
+                            goto GiveNameOnFail;
+                        }
                     GiveAge:
                         ClearAfterInput($"Kuinka vanha on {newHuman.Name}?");
+                        
                         int ageFailLimit = 0;
                     //Start of giving age, if age contains letters or it is over 125, start over
                     GiveAgeOnFail:
@@ -59,7 +78,7 @@ namespace classTestailua
                         int ageNum;
                         if (!int.TryParse(age, out ageNum))
                         {
-                            Console.WriteLine("Antamassassi iässä on kirjaimia. Syötä vain numeroita.");
+                            Console.WriteLine("Antamassassi iässä on kirjaimia. Syötä vain numeroita:");
                             ageFailLimit++;
                             if (CheckFail(ageFailLimit) == true)
                             {
@@ -82,6 +101,7 @@ namespace classTestailua
 
                     GiveGender:
                         ClearAfterInput("Mikä on hänen sukupuolensa? Valitse mies painamalla 1 tai nainen painamalla 2:");
+                        
                         int genderFailLimit = 0;
                     //Start of giving gender
                     GiveGenderOnFail:
@@ -89,7 +109,7 @@ namespace classTestailua
                         int GenderNum;
                         if (!int.TryParse(genderInput, out GenderNum))
                         {
-                            Console.WriteLine("Syötä vain numeroita.");
+                            Console.WriteLine("Syötä vain numeroita:");
                             genderFailLimit++;
                             if (CheckFail(genderFailLimit) == true)
                             {
@@ -164,6 +184,7 @@ namespace classTestailua
                         Console.WriteLine();
                         Console.WriteLine("Haluaisitko lisätä uuden henkilön vai palata alkuun? Paina 1 palataksesi tai 2 uuden henkilön lisäykseen.");
                         Console.WriteLine("Voit myös tarkastella tallennttuja henkilöitä painamalla 3.");
+                        
                         int selectionFailLimit = 0;
                     endOfHumanIfFail:
                         //End of creating person
@@ -173,7 +194,7 @@ namespace classTestailua
 
                         if (!int.TryParse(exitInput, out exitNum))
                         {
-                            Console.WriteLine("Syötä vain numeroita.");
+                            Console.WriteLine("Syötä vain numeroita:");
                             selectionFailLimit++;
                             if (CheckFail(selectionFailLimit) == true)
                             {
@@ -214,7 +235,7 @@ namespace classTestailua
                         int savedNum;
                         if (!int.TryParse(savedInput, out savedNum))
                         {
-                            Console.WriteLine("Syötä vain numeroita.");
+                            Console.WriteLine("Syötä vain numeroita:");
                             savedFailLimit++;
                             if(CheckFail(savedFailLimit) == true)
                             {
@@ -234,7 +255,7 @@ namespace classTestailua
                         }
                         else
                         {
-                            Console.WriteLine("Syötit väärän arvon.Valitse 1 , 2 tai 3:");
+                            Console.WriteLine("Syötit väärän arvon. Valitse 1 , 2 tai 3:");
                             savedFailLimit++;
                             if(CheckFail(savedFailLimit) == true)
                             {
@@ -254,7 +275,7 @@ namespace classTestailua
                         int savedNum2;
                         if (!int.TryParse(savedInput2, out savedNum2))
                         {
-                            Console.WriteLine("Syötä vain numeroita.");
+                            Console.WriteLine("Syötä vain numeroita:");
                             savedStartFailLimit++;
                             if(CheckFail(savedStartFailLimit) == true)
                             {
@@ -275,7 +296,7 @@ namespace classTestailua
                         }
                         else
                         {
-                            Console.WriteLine("Syötit väärän arvon.Valitse 1 , 2 tai 3:");
+                            Console.WriteLine("Syötit väärän arvon. Valitse 1 , 2 tai 3:");
                             savedStartFailLimit++;
                             if (CheckFail(savedStartFailLimit) == true)
                             {
@@ -283,6 +304,15 @@ namespace classTestailua
                             }
                             goto startOfEditFromStartIfFail;
                         }
+
+                    default:
+                        Console.WriteLine("Syötit väärän arvon. Valitse 1 tai 2:");
+                        startSelectionFaiLimit++;
+                        if (CheckFail(startSelectionFaiLimit) == true)
+                        {
+                            goto programStart;
+                        }
+                        goto userInputStart;
                 }
 
         }
