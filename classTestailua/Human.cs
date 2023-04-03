@@ -169,9 +169,9 @@ namespace classTestailua
                 int editFailLimit = 0;
             editStartIfFail:
                 string newContent = Console.ReadLine();
-                if (Human.CheckIfDoesNotContainNumbers(newContent) != true) //Message and go back if the name contains numbers
+                if (CheckIfDoesNotContainNumbersOrSpecials(newContent) != true) //Message and go back if the name contains numbers
                 {
-                    Console.WriteLine("Antamassasi nimessä on numeroita. Syötä vain kirjaimia.");
+                    Console.WriteLine("Antamassasi nimessä on numeroita tai erikoismerkkejä. Syötä vain kirjaimia:");
                     editFailLimit++;
                     if (Program.CheckFail(editFailLimit) == true)
                     {
@@ -199,7 +199,7 @@ namespace classTestailua
                 int editFailLimit = 0;
             editStartIfFail:
                 string newContent = Console.ReadLine();
-                if (Human.CheckIfDoesNotContainNumbers(newContent) != false) //Message and go back if the age contains letters
+                if (CheckIfDoesNotContainNumbersOrSpecials(newContent) != false) //Message and go back if the age contains letters
                 {
                     Console.WriteLine("Antamassasi iässä on kirjaimia.");
                     editFailLimit++;
@@ -361,10 +361,10 @@ namespace classTestailua
             }
         }
 
-        public static bool CheckIfDoesNotContainNumbers(string text)
+        public static bool CheckIfDoesNotContainNumbersOrSpecials(string text)
         {
-            //If the string contains the numbers listed, return false and if it does not, return true.
-            if ("1234567890".ToCharArray().Any(c => text.Contains(c)))
+            //If the string contains numbers or special characters, return false and if it does not, return true.
+            if ("1234567890".ToCharArray().Any(c => text.Contains(c)) || text.ToCharArray().Any(c => ! char.IsLetterOrDigit(c)))
             {
                 return false;
 

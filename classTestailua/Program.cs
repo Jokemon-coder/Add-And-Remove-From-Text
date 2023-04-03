@@ -48,9 +48,9 @@ namespace classTestailua
                         int nameFailLimit = 0;
                     GiveNameOnFail:
                         newHuman.Name = Console.ReadLine();
-                        if (Human.CheckIfDoesNotContainNumbers(newHuman.Name) != true)
+                        if (Human.CheckIfDoesNotContainNumbersOrSpecials(newHuman.Name) != true)
                         {
-                            Console.WriteLine("Antamassasi nimessä on numeroita. Syötä vain kirjaimia:");
+                            Console.WriteLine("Antamassasi nimessä on numeroita tai erikoismerkkejä. Syötä vain kirjaimia:");
                             nameFailLimit++;
                             if(CheckFail(nameFailLimit) == true)
                             {
