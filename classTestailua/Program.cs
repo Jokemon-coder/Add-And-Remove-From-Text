@@ -245,9 +245,8 @@ namespace classTestailua
                         }
                         if (savedNum == 1)
                         {
-                        editStart:
                             EditSavedItems();
-                            goto editStart;
+                            goto programStart;
                         }
                         else if (savedNum == 2)
                         {
@@ -286,9 +285,8 @@ namespace classTestailua
                         if (savedNum2 == 1)
                         {
                             Human.CreateNewLineAndClear();
-                        editStart:
                             EditSavedItems();
-                            goto editStart;
+                            goto programStart;
                         }
                         else if (savedNum2 == 2)
                         {
@@ -313,6 +311,7 @@ namespace classTestailua
                             goto programStart;
                         }
                         goto userInputStart;
+                        
                 }
 
         }
@@ -321,7 +320,7 @@ namespace classTestailua
         {
         SelectItem:
             int id = File.ReadAllLines("People.txt").Length;
-            ClearAfterInput("Voit muokata tallennettuja tietoja kirjoittamalla niiden ID-luvun ja painamalla enter.");
+            ClearAfterInput("Voit muokata tallennettuja tietoja kirjoittamalla niiden ID-luvun ja painamalla enter. Palaa takaisin painamalla vain ENTER.");
             Human.GetSavedItems(false, 0);
 
             //An int to track number of fails
@@ -331,8 +330,15 @@ namespace classTestailua
         selectItemIfFail:
             string userInput = Console.ReadLine();
             int inputNum;
-            if (!int.TryParse(userInput, out inputNum))
+
+
+            if(userInput == "")
             {
+                return;
+            }
+
+            if (!int.TryParse(userInput, out inputNum))
+            {  
                 Console.WriteLine("Syötä vain numeroita.");
                 failLimit += 1;
                 if (failLimit >= 4)
