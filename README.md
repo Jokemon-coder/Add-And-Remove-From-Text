@@ -13,7 +13,6 @@ The name, age and gender of items contained within the text file can also be mod
 Most of the functions relating to manipulation of the text file and it's contents are stored within the Human Class itself in public form, so they can be called from Program. 
 
 ## Known bugs or missing features as of writing
-- No ability to go back once entered looking at existing items is initialized.
 
 
 
