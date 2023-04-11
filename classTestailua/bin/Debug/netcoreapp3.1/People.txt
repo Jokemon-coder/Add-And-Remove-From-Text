@@ -1,6 +1,2 @@
 ID 0: Hello, 2-v, nainen
-ID 1: Hello, 2-v, nainen
-ID 2: JHello, 2-v, nainen
-ID 3: Hello, 2-v, nainen
-ID 4: Hello, 2-v, nainen
-ID 5: Hello, 2-v, nainen
+ID 1: Hello, 1-v, nainen

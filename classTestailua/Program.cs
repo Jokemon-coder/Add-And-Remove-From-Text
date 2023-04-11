@@ -226,82 +226,14 @@ namespace classTestailua
                         }
 
                     savedPeople:
-                        ClearAfterInput("Pystyt muokkaamaan tallennettuja henkilöitä painamalla 1 tai palaamaan takaisin painamalla 2.");
                         Human.CreateNewLineAndClear();
-                        Human.GetSavedItems(false, 0);
-                        int savedFailLimit = 0;
-                    startIfFail:
-                        string savedInput = Console.ReadLine();
-                        int savedNum;
-                        if (!int.TryParse(savedInput, out savedNum))
-                        {
-                            Console.WriteLine("Syötä vain numeroita:");
-                            savedFailLimit++;
-                            if(CheckFail(savedFailLimit) == true)
-                            {
-                                goto savedPeople;
-                            }
-                            goto startIfFail;
-                        }
-                        if (savedNum == 1)
-                        {
-                            EditSavedItems();
-                            goto programStart;
-                        }
-                        else if (savedNum == 2)
-                        {
-                            goto programStart;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Syötit väärän arvon. Valitse 1 , 2 tai 3:");
-                            savedFailLimit++;
-                            if(CheckFail(savedFailLimit) == true)
-                            {
-                                goto savedPeople;
-                            }
-                            goto startIfFail;
-                        }
+                        ClearAfterInput("Pystyt muokkaamaan tallennettuja henkilöitä painamalla 1 tai palaamaan takaisin painamalla 2.");
+                        EditSavedItems();
+                        goto programStart;
 
                     case "2":
-                    startOfEditFromStart:
-                        ClearAfterInput("Pystyt muokkaamaan tallennettuja henkilöitä painamalla 1 tai palaamaan takaisin painamalla 2.");
-                        Human.CreateNewLineAndClear();
-                        Human.GetSavedItems(false, 0);
-                        int savedStartFailLimit = 0;
-                    startOfEditFromStartIfFail:
-                        string savedInput2 = Console.ReadLine();
-                        int savedNum2;
-                        if (!int.TryParse(savedInput2, out savedNum2))
-                        {
-                            Console.WriteLine("Syötä vain numeroita:");
-                            savedStartFailLimit++;
-                            if(CheckFail(savedStartFailLimit) == true)
-                            {
-                                goto startOfEditFromStart;
-                            }
-                            goto startOfEditFromStartIfFail;
-                        }
-                        if (savedNum2 == 1)
-                        {
-                            Human.CreateNewLineAndClear();
-                            EditSavedItems();
-                            goto programStart;
-                        }
-                        else if (savedNum2 == 2)
-                        {
-                            goto programStart;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Syötit väärän arvon. Valitse 1 , 2 tai 3:");
-                            savedStartFailLimit++;
-                            if (CheckFail(savedStartFailLimit) == true)
-                            {
-                                goto startOfEditFromStart;
-                            }
-                            goto startOfEditFromStartIfFail;
-                        }
+                        EditSavedItems();
+                        goto programStart;
 
                     default:
                         Console.WriteLine("Syötit väärän arvon. Valitse 1 tai 2:");
@@ -310,10 +242,8 @@ namespace classTestailua
                         {
                             goto programStart;
                         }
-                        goto userInputStart;
-                        
+                        goto userInputStart;     
                 }
-
         }
 
         private static void EditSavedItems()
@@ -364,13 +294,14 @@ namespace classTestailua
             Human.GetSavedItems(true, selectedItem);
             //Start of actual editing
             Console.WriteLine("Voit muokata nimeä painamalla 1, ikää painamalla 2 tai sukupuolta painamalla 3. Poista painamalla 0. Voit myös palata takaisin painamalla 4.");
+            int editFailLimit = 0;
         editStartIfFail:
             userInput = Console.ReadLine();
             if (!int.TryParse(userInput, out inputNum))
             {
                 Console.WriteLine("Syötä vain numeroita.");
-                failLimit += 1;
-                if (failLimit >= 4)
+                editFailLimit += 1;
+                if (editFailLimit >= 4)
                 {
                     goto editStart;
                 }
@@ -394,7 +325,7 @@ namespace classTestailua
             }
             else if (inputNum == 4)
             {
-
+                goto SelectItem;
             }
             else if (inputNum == 0)
             {
@@ -420,6 +351,7 @@ namespace classTestailua
                 if (num == 1)
                 {
                     Human.Delete("People.txt", selectedItem);
+                    goto SelectItem;
                 } else if (num == 2)
                 {
                     goto editStart;
@@ -433,6 +365,16 @@ namespace classTestailua
                     }
                     goto selectIfFail;
                 }
+            }
+            else
+            {
+                Console.WriteLine("Syötä vain annettuja lukuja");
+                editFailLimit += 1;
+                if (editFailLimit >= 4)
+                {
+                    goto editStart;
+                }
+                goto editStartIfFail;
             }
         }
 
