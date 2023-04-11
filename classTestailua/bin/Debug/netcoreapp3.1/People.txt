@@ -1,2 +1,0 @@
-ID 0: Hello, 2-v, nainen
-ID 1: Hello, 1-v, nainen
