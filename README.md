@@ -5,6 +5,8 @@ I started this project off mainly as something to play around with classes, but 
 
 Everything the program shows to the user is in Finnish, but the code itself and the comments in it are in English
 
+The file path is classTestailua/bin/Debug/netcoreapp3.1/People.txt
+
 ## Functionality and features
 The program contains a Class "Human", which contains the variables for name, age and gender. Every time the creation of a new item starts, a new object is created using the class "Human". The user then inputs the name, age and gender of the person. The variables declared for the object are then added into the file using StreamWriter and a custom ToSring-function. The unique ID for the added "person" is also created automatically based on the line where the new "person" is added. 
 
